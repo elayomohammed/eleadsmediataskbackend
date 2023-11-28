@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+</head>
+<body>
+    <section id="output"></section>
+    <input id="img" type="file" accept="img/*"/>
+    <button type="button"id='btn'>click</button>
+
+    <script type="text/javascript">
+        const reader = new FileReader();
+        async function handlebtn(){
+            const img = document.getElementById('img').files[0];
+            await reader.readAsDataURL(img);
+            reader.onload = async (event) =>{
+                const data = event.target.result;
+                const output = document.getElementById('output');
+                const image = document.createElement('img');
+                image.src = data;
+                await output.appendChild(image);
+            }
+        }
+        
+        document.getElementById('btn').addEventListener('click', () => {
+            handlebtn();
+        })
+    </script>
+</body>
+</html>

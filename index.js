@@ -68,6 +68,6 @@ app.get('/allEntries', async (req, res, next) => {
     }
 })
 
-app.listen(port, host () => {
+app.listen(port, host, () => {
     console.log(`server is live and listening on public port ${port}`);
 });

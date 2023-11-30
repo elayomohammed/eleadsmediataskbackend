@@ -8,6 +8,9 @@ const client = new MongoClient(process.env.DBURL);
 
 const app = express();
 
+const port = process.env.port;
+const host = process.env.host;
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
@@ -65,6 +68,6 @@ app.get('/allEntries', async (req, res, next) => {
     }
 })
 
-app.listen(3001, 'localhost', () => {
-    console.log('server is live and listening on localhost port 3001...');
+app.listen(port, host, () => {
+    console.log(`server is live and listening on public port ${port}`);
 });

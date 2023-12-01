@@ -8,28 +8,27 @@ const client = new MongoClient(process.env.DBURL);
 
 const app = express();
 
-// const port = process.env.port;
+const port = process.env.port;
 // const host = process.env.host;
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers');
-    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
     next();
-});
+})
 
 app.use(express.json());
 app.use(cors());
 
 // Default route
-app.get('/api',(req, res, next) => {
+app.get('/',(req, res, next) => {
     res.status(200).send("\nwelcome to eleads media backend's default endpoint...\nplease navigate to a valid endpoint...");
     next();
 });
 
 // Add single user details route
-app.post('/api/insert', async (req, res, next) => {
+app.post('/insert', async (req, res, next) => {
     try{
         await client.connect();
         console.log('db connected succesfully...');
@@ -55,7 +54,7 @@ app.post('/api/insert', async (req, res, next) => {
 });
 
 // retrieve all details in the db
-app.get('/api/allEntries', async (req, res, next) => {
+app.get('/allEntries', async (req, res, next) => {
     try{
         await client.connect();
         const collection = client.db('eleads').collection('allUsersDetails');
@@ -67,4 +66,8 @@ app.get('/api/allEntries', async (req, res, next) => {
         await client.close();
         console.log('db connection closed successfully...');
     }
+})
+
+app.listen(port, () => {
+    console.log(`server is live and listening on public port ${port}`);
 });

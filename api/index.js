@@ -8,7 +8,7 @@ const client = new MongoClient(process.env.DBURL);
 
 const app = express();
 
-const port = process.env.port;
+// const port = process.env.port;
 // const host = process.env.host;
 
 app.use((req, res, next) => {
@@ -66,8 +66,4 @@ app.get('/allEntries', async (req, res, next) => {
         await client.close();
         console.log('db connection closed successfully...');
     }
-})
-
-app.listen(port, () => {
-    console.log(`server is live and listening on public port ${port}`);
 });

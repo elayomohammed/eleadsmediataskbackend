@@ -1,4 +1,11 @@
 {
+  "name": "eleadsmediabackendtask",
+  "version": "1.0.0",
+  "description": "A simple standalone Express backend for eleadsmediabackendtask",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "bson": "^6.2.0",
     "cors": "^2.8.5",

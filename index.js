@@ -22,13 +22,13 @@ app.use(express.json());
 app.use(cors());
 
 // Default route
-app.get('/',(req, res, next) => {
+app.get('/api',(req, res, next) => {
     res.status(200).send("\nwelcome to eleads media backend's default endpoint...\nplease navigate to a valid endpoint...");
     next();
 });
 
 // Add single user details route
-app.post('/insert', async (req, res, next) => {
+app.post('api//insert', async (req, res, next) => {
     try{
         await client.connect();
         console.log('db connected succesfully...');
@@ -54,7 +54,7 @@ app.post('/insert', async (req, res, next) => {
 });
 
 // retrieve all details in the db
-app.get('/allEntries', async (req, res, next) => {
+app.get('/api/allEntries', async (req, res, next) => {
     try{
         await client.connect();
         const collection = client.db('eleads').collection('allUsersDetails');

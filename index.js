@@ -1,3 +1,4 @@
+import nodemailer from 'nodemailer';
 const {MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
@@ -10,6 +11,19 @@ const app = express();
 
 const port = process.env.port;
 // const host = process.env.host;
+
+function validatePhoneNumber(phoneNumber) {
+    // Regular expression patterns for Nigeria and India phone numbers
+    const nigeriaPattern = /^(?:\+234\d{10})|(?:0[89]\d{9})$/;
+    const indiaPattern = /^(?:\+91\d{10})|(?:0[789]\d{9})$/;
+  
+    // Check if the phone number matches either pattern
+    if (nigeriaPattern.test(phoneNumber) || indiaPattern.test(phoneNumber)) {
+      return true;
+    } else {
+      return false;
+    }
+}
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -42,8 +56,38 @@ app.post('/api/insert', async (req, res, next) => {
             phone: req.body.phone,
             userID: req.body.userID
         };
-        const insertTx = await collection.insertOne(userDoc);
-        res.status(200).json(`user inserted successfully with the id: ${insertTx.insertedId}`);
+
+        if (validatePhoneNumber(phoneNumber)) {
+            const insertTx = await collection.insertOne(userDoc);
+
+            // email transporter
+            const transporter = nodemailer.createTransport({
+                host: 'smtp.google.com',
+                port: 587,
+                secure: true,
+                auth: {
+                    user: 'thefreethinkeer@gmail.com',
+                    pass: process.env.TRNASPORTER_PASS
+                }
+            });
+            // mail configuration
+            const mailParams = {
+                from: '"eLeads Media" thefreethinkeer@gmail.com',
+                to: userDoc.email,
+                subject: 'successfull input entry',
+                text: `your input for user ${userDoc.email} have been saved successfully to the server...`
+            };
+            transporter.sendMail(mailParams, (error, info) =>{
+                if(error){
+                    console.log(error);
+                }else{
+                    console.log('email sent', info.messageId);
+                }
+            });
+            res.status(200).json(`user inserted successfully with the id: ${insertTx.insertedId}`);
+        } else {
+            res.status(400).json('Failed to submit form, Wrong phone number format...');
+        }
     }catch(error){
         console.error(`insertion error: ${error}`);
     }finally{

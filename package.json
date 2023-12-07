@@ -13,6 +13,7 @@
     "express": "^4.18.2"
   },
   "devDependencies": {
-    "mongodb": "^6.3.0"
+    "mongodb": "^6.3.0",
+    "nodemailer": "^6.9.7"
   }
 }

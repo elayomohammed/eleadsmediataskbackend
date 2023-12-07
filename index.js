@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+const nodemailer = require('nodemailer');
 const {MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 const cors = require('cors');

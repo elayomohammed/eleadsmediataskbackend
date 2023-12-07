@@ -57,7 +57,7 @@ app.post('/api/insert', async (req, res, next) => {
             userID: req.body.userID
         };
 
-        if (validatePhoneNumber(phoneNumber)) {
+        if (validatePhoneNumber(userDoc.phone)) {
             const insertTx = await collection.insertOne(userDoc);
 
             // email transporter

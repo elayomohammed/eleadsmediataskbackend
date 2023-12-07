@@ -25,6 +25,17 @@ function validatePhoneNumber(phoneNumber) {
     }
 }
 
+// email transporter
+const transporter = nodemailer.createTransport({
+    host: 'smtp.google.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: 'thefreethinkeer@gmail.com',
+        pass: process.env.TRNASPORTER_PASS,
+    },
+});
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
@@ -60,33 +71,18 @@ app.post('/api/insert', async (req, res, next) => {
             const insertTx = await collection.insertOne(userDoc);
 
             const sendEmail = async () => {
-                // email transporter
-                const transporter = nodemailer.createTransport({
-                    host: 'smtp.google.com',
-                    port: 465,
-                    secure: true,
-                    auth: {
-                        user: 'thefreethinkeer@gmail.com',
-                        pass: process.env.TRNASPORTER_PASS
-                    }
-                });
                 // mail configuration
                 const mailParams = {
                     from: '"eLeads Media" thefreethinkeer@gmail.com',
                     to: userDoc.email,
                     subject: 'successfull input entry',
                     text: `your input for user ${userDoc.email} have been saved successfully to the server...`,
-                    html: `<p>your input for user ${userDoc.email} have been saved successfully to the server...</p>`
+                    html: `<p>your input for user ${userDoc.email} have been saved successfully to the server...</p>`,
                 };
-                transporter.sendMail(mailParams, (error, info) =>{
-                    if(error){
-                        console.log(error);
-                    }else{
-                        console.log('email sent', info.messageId);
-                    }
-                });
+                const info = await transporter.sendMail(mailParams);
+                console.log('email sent', info.messageId);
             };
-            await sendEmail();
+            sendEmail().catch(console.error);
             res.status(200).json(`user inserted successfully with the id: ${insertTx.insertedId}`);
         }else{
             res.status(400).json('Failed to submit form, Wrong phone number format...');

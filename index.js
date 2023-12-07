@@ -18,10 +18,10 @@ function validatePhoneNumber(phoneNumber) {
     const indiaPattern = /^(?:\+91\d{10})|(?:0[789]\d{9})$/;
   
     // Check if the phone number matches either pattern
-    if (nigeriaPattern.test(phoneNumber) || indiaPattern.test(phoneNumber)) {
-      return true;
-    } else {
+    if (!nigeriaPattern.test(phoneNumber) || !indiaPattern.test(phoneNumber)) {
       return false;
+    } else {
+      return true;
     }
 }
 
@@ -45,9 +45,8 @@ app.get('/api',(req, res, next) => {
 app.post('/api/insert', async (req, res, next) => {
     try{
         await client.connect();
-        console.log('db connected succesfully...');
         const collection = client.db('eleads').collection('allUsersDetails');
-        console.log('eleads db and collection connected succesfully...');
+        console.log('eleads media db connected succesfully...');
         const userDoc = {
             fName: req.body.fName,
             lName: req.body.lName,
@@ -87,9 +86,9 @@ app.post('/api/insert', async (req, res, next) => {
                     }
                 });
             };
-            sendEmail();
+            await sendEmail();
             res.status(200).json(`user inserted successfully with the id: ${insertTx.insertedId}`);
-        } else {
+        }else{
             res.status(400).json('Failed to submit form, Wrong phone number format...');
         }
     }catch(error){
@@ -106,13 +105,14 @@ app.get('/api/allEntries', async (req, res, next) => {
     try{
         await client.connect();
         const collection = client.db('eleads').collection('allUsersDetails');
+        console.log('eleads media db connected for retrieval tx');
         const getTx = await collection.find({}).toArray();
         res.status(200).send(getTx);
     }catch(error){
-        console.log(`error getting all entries: ${error}`);
+        console.log(`elayo says retrieval error: ${error}`);
     }finally{
         await client.close();
-        console.log('db connection closed successfully...');
+        console.log('eleads media db connection closed after retrieval tx');
     }
 })
 

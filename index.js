@@ -18,10 +18,10 @@ function validatePhoneNumber(phoneNumber) {
     const indiaPattern = /^(?:\+91\d{10})|(?:0[789]\d{9})$/;
   
     // Check if the phone number matches either pattern
-    if (!nigeriaPattern.test(phoneNumber) || !indiaPattern.test(phoneNumber)) {
-      return false;
-    } else {
+    if (nigeriaPattern.test(phoneNumber) || indiaPattern.test(phoneNumber)) {
       return true;
+    } else {
+      return false;
     }
 }
 

@@ -57,7 +57,6 @@ app.post('/api/insert', async (req, res, next) => {
     try{
         await client.connect();
         const collection = client.db('eleads').collection('allUsersDetails');
-        console.log('eleads media db connected succesfully...');
         const userDoc = {
             fName: req.body.fName,
             lName: req.body.lName,
@@ -91,7 +90,6 @@ app.post('/api/insert', async (req, res, next) => {
         console.error(`insertion error: ${error}`);
     }finally{
         await client.close();
-        console.log('db connection closed succesfully...');
     };
     next();
 });
@@ -101,14 +99,12 @@ app.get('/api/allEntries', async (req, res, next) => {
     try{
         await client.connect();
         const collection = client.db('eleads').collection('allUsersDetails');
-        console.log('eleads media db connected for retrieval tx');
         const getTx = await collection.find({}).toArray();
         res.status(200).send(getTx);
     }catch(error){
         console.log(`elayo says retrieval error: ${error}`);
     }finally{
         await client.close();
-        console.log('eleads media db connection closed after retrieval tx');
     }
 })
 

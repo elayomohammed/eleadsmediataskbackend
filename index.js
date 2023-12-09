@@ -39,10 +39,10 @@ const sendEmail = async (sendTo) => {
     // mail configuration
     const mailParams = {
         from: '"eleads media" thefreethinkeer@gmail.com',
-        to: sendTo,
+        to: sendTo.email,
         subject: 'successfull input entry',
-        text: `your input for user ${userDoc.email} have been saved successfully to the server...`,
-        html: `<p>your input for user ${userDoc.email} have been saved successfully to the server...</p>`,
+        text: `your input for user ${sendTo.email} have been saved successfully to the server...`,
+        html: `<p>your input for user ${sendTo.email} have been saved successfully to the server...</p>`,
     };
     const info = await transporter.sendMail(mailParams);
     console.log(`email sent ${info.messageId}`);
@@ -81,7 +81,7 @@ app.post('/api/insert', async (req, res, next) => {
             await client.connect();
             const collection = client.db('eleads').collection('allUsersDetails');
             const insertTx = await collection.insertOne(userDoc);
-            await sendEmail(req.body.email).catch(console.error);
+            await sendEmail(userDoc).catch(console.error);
             return res.status(200).json(`user inserted successfully with the id: ${insertTx.insertedId}`);
         }else{
             res.status(400).json('Failed to submit form, Wrong phone number format...');

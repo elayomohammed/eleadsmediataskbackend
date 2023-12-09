@@ -33,7 +33,7 @@ const sendEmail = async (sendTo) => {
         secure: true,
         auth: {
             user: process.env.TRANSPORTER_USER,
-            pass: TRANSPORTER_PASS,
+            pass: process.env.TRANSPORTER_PASS,
         },
     });
     // mail configuration

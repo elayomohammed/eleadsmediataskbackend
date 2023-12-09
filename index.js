@@ -55,8 +55,6 @@ app.get('/api',(req, res, next) => {
 // Add single user details route
 app.post('/api/insert', async (req, res, next) => {
     try{
-        await client.connect();
-        const collection = client.db('eleads').collection('allUsersDetails');
         const userDoc = {
             fName: req.body.fName,
             lName: req.body.lName,
@@ -67,8 +65,9 @@ app.post('/api/insert', async (req, res, next) => {
         };
 
         if (validatePhoneNumber(userDoc.phone)) {
+            await client.connect();
+            const collection = client.db('eleads').collection('allUsersDetails');
             const insertTx = await collection.insertOne(userDoc);
-
             const sendEmail = async () => {
                 // mail configuration
                 const mailParams = {
@@ -81,7 +80,7 @@ app.post('/api/insert', async (req, res, next) => {
                 const info = await transporter.sendMail(mailParams);
                 console.log('email sent', info.messageId);
             };
-            sendEmail().catch(console.error);
+            await sendEmail().catch(console.error);
             res.status(200).json(`user inserted successfully with the id: ${insertTx.insertedId}`);
         }else{
             res.status(400).json('Failed to submit form, Wrong phone number format...');
@@ -103,9 +102,7 @@ app.get('/api/allEntries', async (req, res, next) => {
         res.status(200).send(getTx);
     }catch(error){
         console.log(`elayo says retrieval error: ${error}`);
-    }finally{
-        await client.close();
-    }
+    };
 })
 
 app.listen(port, () => {

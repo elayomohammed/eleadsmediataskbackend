@@ -32,8 +32,8 @@ const sendEmail = async (sendTo) => {
         port: 465,
         secure: true,
         auth: {
-            user: 'thefreethinkeer@gmail.com',
-            pass: 'xxazidogurrhvidv',
+            user: process.env.TRANSPORTER_USER,
+            pass: TRANSPORTER_PASS,
         },
     });
     // mail configuration

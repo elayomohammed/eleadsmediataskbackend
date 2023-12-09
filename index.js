@@ -27,11 +27,11 @@ function validatePhoneNumber(phoneNumber) {
 
 // email transporter
 const transporter = nodemailer.createTransport({
-    host: 'smtp.google.com',
+    host: 'smtp.gmail.com',
     port: 465,
     secure: true,
     auth: {
-        user: 'thefreethinkeer@gmail.com',
+        user: process.env.TRANSPORTER_USER,
         pass: process.env.TRNASPORTER_PASS,
     },
 });

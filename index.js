@@ -71,7 +71,7 @@ app.post('/api/insert', async (req, res, next) => {
             const sendEmail = async () => {
                 // mail configuration
                 const mailParams = {
-                    from: '"eLeads Media" thefreethinkeer@gmail.com',
+                    from: 'thefreethinkeer@gmail.com',
                     to: userDoc.email,
                     subject: 'successfull input entry',
                     text: `your input for user ${userDoc.email} have been saved successfully to the server...`,

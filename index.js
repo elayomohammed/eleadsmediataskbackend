@@ -102,7 +102,9 @@ app.get('/api/allEntries', async (req, res, next) => {
         res.status(200).send(getTx);
     }catch(error){
         console.log(`elayo says retrieval error: ${error}`);
-    };
+    }finally{
+        await client.close();
+    }
 })
 
 app.listen(port, () => {

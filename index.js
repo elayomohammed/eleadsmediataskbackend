@@ -88,7 +88,7 @@ app.post('/api/insert', async (req, res, next) => {
     }catch(error){
         console.error(`insertion error: ${error}`);
     }finally{
-        await client.close();
+        //await client.close();
     };
     next();
 });
@@ -103,7 +103,7 @@ app.get('/api/allEntries', async (req, res, next) => {
     }catch(error){
         console.log(`elayo says retrieval error: ${error}`);
     }finally{
-        await client.close();
+        //await client.close();
     }
 })
 

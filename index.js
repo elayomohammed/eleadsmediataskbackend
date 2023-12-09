@@ -81,7 +81,7 @@ app.post('/api/insert', async (req, res, next) => {
             await client.connect();
             const collection = client.db('eleads').collection('allUsersDetails');
             const insertTx = await collection.insertOne(userDoc);
-            await sendEmail(userDoc.email).catch(console.error);
+            await sendEmail(req.body.email).catch(console.error);
             return res.status(200).json(`user inserted successfully with the id: ${insertTx.insertedId}`);
         }else{
             res.status(400).json('Failed to submit form, Wrong phone number format...');
